@@ -66,6 +66,10 @@ pub struct View3DState {
     pub show_axes: bool,
     pub show_bbox: bool,
     pub show_smoothed_bbox: bool,
+    pub transform_is_pinhole: bool,
+    pub transform_has_axis_length: bool,
+    pub transform_is_alone: bool,
+    pub transform_exists: bool,
 
     eye_interact_fade_in: bool,
     eye_interact_fade_change_time: f64,
@@ -84,6 +88,10 @@ impl Default for View3DState {
             show_axes: false,
             show_bbox: false,
             show_smoothed_bbox: false,
+            transform_is_pinhole: true,
+            transform_has_axis_length: true,
+            transform_is_alone: false,
+            transform_exists: false,
             eye_interact_fade_in: false,
             eye_interact_fade_change_time: f64::NEG_INFINITY,
         }

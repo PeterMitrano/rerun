@@ -195,6 +195,7 @@ impl ViewClass for SpatialView3D {
     fn choose_default_visualizers(
         &self,
         entity_path: &EntityPath,
+        // NOTE: So what controls how these arguments are set?
         maybe_visualizable_entities_per_visualizer: &PerVisualizer<MaybeVisualizableEntities>,
         visualizable_entities_per_visualizer: &PerVisualizer<VisualizableEntities>,
         indicated_entities_per_visualizer: &PerVisualizer<IndicatedEntities>,
@@ -248,6 +249,8 @@ impl ViewClass for SpatialView3D {
             .collect();
 
         // Arrow visualizer is not enabled yet but we could…
+        let viz_arrows_pinhole = state.transform_is_pinhole && visualizable.contains(&arrows_viz);
+
         if !enabled_visualizers.contains(&arrows_viz) && visualizable.contains(&arrows_viz) {
             // … then we enable it if either:
             // - If someone set an axis_length explicitly, so [`AxisLengthDetector`] is applicable.
@@ -421,7 +424,39 @@ impl ViewClass for SpatialView3D {
         re_ui::list_item::list_item_scope(ui, "spatial_view3d_selection_ui", |ui| {
             view_property_ui::<Background>(ctx, ui, view_id, self, state);
             view_property_ui_grid3d(ctx, ui, view_id, self, state);
+            // NOTE: make a new property UI for "Visualize Transforms"?
         });
+
+        // Add a series of checkboxes to determine whether TransformArrows3D
+        // get added automatically.
+        // 1. Pinhole Cameras
+        // 2. axis_length specified
+        // 4. only transforms3d present
+        // 4. transforms3d present
+        ui.grid_left_hand_label("Show Transform Arrows")
+            .on_hover_text("Automatically add a Transform3DArrows if certain conditions are met");
+        ui.re_checkbox(
+            &mut state.state_3d.transform_is_pinhole,
+            "Transform is for PinHole camera",
+        )
+            .on_hover_text("Show transform if there is a PinHole camera");
+        ui.re_checkbox(
+            &mut state.state_3d.transform_has_axis_length,
+            "Transform has Axis Length set",
+        )
+            .on_hover_text("Show transform if axis_length is set");
+        ui.re_checkbox(
+            &mut state.state_3d.transform_is_alone,
+            "Transform is alone",
+        )
+            .on_hover_text("Show transform if no other visualizers are present");
+        ui.re_checkbox(
+            &mut state.state_3d.transform_exists,
+            "Always",
+        )
+        .on_hover_text("Always show");
+        ui.end_row();
+
 
         Ok(())
     }
