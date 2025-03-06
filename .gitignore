@@ -78,4 +78,3 @@ justfile
 
 # IDE stuff
 /.idea
-.vscode
