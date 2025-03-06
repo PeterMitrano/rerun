@@ -20,6 +20,7 @@ from .scalar_axis import ScalarAxis
 from .tensor_scalar_mapping import TensorScalarMapping
 from .tensor_slice_selection import TensorSliceSelection
 from .tensor_view_fit import TensorViewFit
+from .transform3d_arrows_blueprint import Transform3dArrowsBlueprint
 from .view_blueprint import ViewBlueprint
 from .view_contents import ViewContents
 from .viewport_blueprint import ViewportBlueprint
@@ -45,6 +46,7 @@ __all__ = [
     "TensorScalarMapping",
     "TensorSliceSelection",
     "TensorViewFit",
+    "Transform3dArrowsBlueprint",
     "ViewBlueprint",
     "ViewContents",
     "ViewportBlueprint",

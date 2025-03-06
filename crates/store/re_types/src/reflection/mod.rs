@@ -2302,6 +2302,33 @@ fn generate_archetype_reflection() -> ArchetypeReflectionMap {
             },
         ),
         (
+            ArchetypeName::new("rerun.blueprint.archetypes.Transform3dArrowsBlueprint"),
+            ArchetypeReflection {
+                display_name: "Transform 3D arrows blueprint",
+                scope: Some("blueprint"),
+                view_types: &[],
+                fields: vec![
+                    ArchetypeFieldReflection { name : "transform_is_pinhole",
+                    display_name : "Transform is pinhole", component_name :
+                    "rerun.blueprint.components.Visible".into(), docstring_md :
+                    "Show arrows if there is a PinHole camera entity in the path",
+                    is_required : false, }, ArchetypeFieldReflection { name :
+                    "transform_has_axis_length", display_name :
+                    "Transform has axis length", component_name :
+                    "rerun.blueprint.components.Visible".into(), docstring_md :
+                    "Show arrows if axis length is specified", is_required : false, },
+                    ArchetypeFieldReflection { name : "transform_is_alone", display_name
+                    : "Transform is alone", component_name :
+                    "rerun.blueprint.components.Visible".into(), docstring_md :
+                    "Shows arrows if the Transform3D is the only entity on that entity path",
+                    is_required : false, }, ArchetypeFieldReflection { name :
+                    "transform_exists", display_name : "Transform exists", component_name
+                    : "rerun.blueprint.components.Visible".into(), docstring_md :
+                    "Always show arrows", is_required : false, },
+                ],
+            },
+        ),
+        (
             ArchetypeName::new("rerun.blueprint.archetypes.ViewBlueprint"),
             ArchetypeReflection {
                 display_name: "View blueprint",

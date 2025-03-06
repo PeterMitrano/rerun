@@ -32,9 +32,9 @@ use crate::{container::ContainerBlueprint, ViewBlueprint, ViewportCommand, VIEWP
 
 /// Describes the layout and contents of the Viewport Panel.
 ///
-/// This datastructure is loaded from the blueprint store at the start of each frame.
+/// This data structure is loaded from the blueprint store at the start of each frame.
 ///
-/// It remain immutable during the frame.
+/// It remains immutable during the frame.
 ///
 /// Any change is queued up into [`Self::deferred_commands`] and applied at the end of the frame,
 /// right before saving to the blueprint store.

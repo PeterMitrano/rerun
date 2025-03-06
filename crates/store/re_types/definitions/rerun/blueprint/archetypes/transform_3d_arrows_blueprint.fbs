@@ -1,0 +1,18 @@
+namespace rerun.blueprint.archetypes;
+
+/// Configuration for when to visualize Transform3DArrows
+table Transform3dArrowsBlueprint(
+    "attr.rerun.scope": "blueprint"
+) {
+    /// Show arrows if there is a PinHole camera entity in the path
+    transform_is_pinhole : rerun.blueprint.components.Visible ("attr.rerun.component_optional", nullable, order: 100);
+
+    /// Show arrows if axis length is specified
+    transform_has_axis_length : rerun.blueprint.components.Visible ("attr.rerun.component_optional", nullable, order: 101);
+
+    /// Shows arrows if the Transform3D is the only entity on that entity path
+    transform_is_alone : rerun.blueprint.components.Visible ("attr.rerun.component_optional", nullable, order: 102);
+
+    /// Always show arrows
+    transform_exists : rerun.blueprint.components.Visible ("attr.rerun.component_optional", nullable, order: 103);
+}

@@ -4,7 +4,7 @@ use nohash_hasher::IntSet;
 
 use re_entity_db::EntityDb;
 use re_log_types::EntityPath;
-use re_types::blueprint::archetypes::LineGrid3D;
+use re_types::blueprint::archetypes::{LineGrid3D, Transform3dArrowsBlueprint};
 use re_types::{
     blueprint::archetypes::Background, components::ViewCoordinates, Component, View,
     ViewClassIdentifier,
@@ -249,15 +249,14 @@ impl ViewClass for SpatialView3D {
             .collect();
 
         // Arrow visualizer is not enabled yet but we could…
-        let viz_arrows_pinhole = state.transform_is_pinhole && visualizable.contains(&arrows_viz);
+        // let viz_arrows_pinhole = state.transform_is_pinhole && visualizable.contains(&arrows_viz);
 
         if !enabled_visualizers.contains(&arrows_viz) && visualizable.contains(&arrows_viz) {
-            // … then we enable it if either:
-            // - If someone set an axis_length explicitly, so [`AxisLengthDetector`] is applicable.
-            // - If we already have the [`CamerasVisualizer`] active.
-            if maybe_visualizable.contains(&axis_detector)
-                || enabled_visualizers.contains(&camera_viz)
-            {
+            // … then we enable it if any of the conditions are met and the blueprint enabled those conditions
+            let axis_length_detected = maybe_visualizable.contains(&axis_detector);
+            let camera_detected = enabled_visualizers.contains(&camera_viz);
+            let alone_detected = enabled_visualizers.is_empty();
+            if axis_length_detected || camera_detected || alone_detected {
                 enabled_visualizers.push(arrows_viz);
             }
         }
@@ -425,38 +424,9 @@ impl ViewClass for SpatialView3D {
             view_property_ui::<Background>(ctx, ui, view_id, self, state);
             view_property_ui_grid3d(ctx, ui, view_id, self, state);
             // NOTE: make a new property UI for "Visualize Transforms"?
+            //  should I be setting fallback provider?
+            view_property_ui::<Transform3dArrowsBlueprint>(ctx, ui, view_id, self, state);
         });
-
-        // Add a series of checkboxes to determine whether TransformArrows3D
-        // get added automatically.
-        // 1. Pinhole Cameras
-        // 2. axis_length specified
-        // 4. only transforms3d present
-        // 4. transforms3d present
-        ui.grid_left_hand_label("Show Transform Arrows")
-            .on_hover_text("Automatically add a Transform3DArrows if certain conditions are met");
-        ui.re_checkbox(
-            &mut state.state_3d.transform_is_pinhole,
-            "Transform is for PinHole camera",
-        )
-            .on_hover_text("Show transform if there is a PinHole camera");
-        ui.re_checkbox(
-            &mut state.state_3d.transform_has_axis_length,
-            "Transform has Axis Length set",
-        )
-            .on_hover_text("Show transform if axis_length is set");
-        ui.re_checkbox(
-            &mut state.state_3d.transform_is_alone,
-            "Transform is alone",
-        )
-            .on_hover_text("Show transform if no other visualizers are present");
-        ui.re_checkbox(
-            &mut state.state_3d.transform_exists,
-            "Always",
-        )
-        .on_hover_text("Always show");
-        ui.end_row();
-
 
         Ok(())
     }

@@ -4,6 +4,31 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        {
+            "name": "Debug 'rerun ./examples/data.rrd'",
+            "type": "lldb",
+            "request": "launch",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--profile=debugging",
+                    "--package=rerun-cli",
+                    "--no-default-features",
+                    "--features=native_viewer"
+                ],
+                "filter": {
+                    "name": "rerun",
+                    "kind": "bin"
+                }
+            },
+            "args": [
+                "./examples/data.rrd"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "RUST_LOG": "debug"
+            }
+        },
         // Python
         {
             "name": "Python Debugger: Current File",
@@ -62,31 +87,6 @@
                 }
             },
             "args": [],
-            "cwd": "${workspaceFolder}",
-            "env": {
-                "RUST_LOG": "debug"
-            }
-        },
-        {
-            "name": "Debug 'rerun ../data.rrd'",
-            "type": "lldb",
-            "request": "launch",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--profile=debugging",
-                    "--package=rerun-cli",
-                    "--no-default-features",
-                    "--features=native_viewer"
-                ],
-                "filter": {
-                    "name": "rerun",
-                    "kind": "bin"
-                }
-            },
-            "args": [
-                "../data.rrd"
-            ],
             "cwd": "${workspaceFolder}",
             "env": {
                 "RUST_LOG": "debug"
